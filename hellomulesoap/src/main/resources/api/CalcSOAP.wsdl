@@ -1,0 +1,108 @@
+<definitions
+	xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+	xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy"
+	xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://calculator.me.org/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://calculator.me.org/"
+	name="CalculatorWSService">
+	<types>
+		<xs:schema xmlns:tns="http://calculator.me.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			version="1.0" targetNamespace="http://calculator.me.org/">
+
+			<xs:element name="add" type="tns:add" />
+
+			<xs:element name="addResponse" type="tns:addResponse" />
+
+			<xs:element name="sayHello" type="tns:sayHello" />
+
+			<xs:element name="sayHelloResponse" type="tns:sayHelloResponse" />
+
+			<xs:complexType name="sayHello">
+				<xs:sequence>
+					<xs:element name="language" type="xs:string" minOccurs="0" />
+				</xs:sequence>
+			</xs:complexType>
+
+			<xs:complexType name="sayHelloResponse">
+				<xs:sequence>
+					<xs:element name="return" type="tns:tranResult"
+						minOccurs="0" />
+				</xs:sequence>
+			</xs:complexType>
+
+			<xs:complexType name="tranResult">
+				<xs:sequence>
+					<xs:element name="language" type="xs:string" minOccurs="0" />
+					<xs:element name="message" type="xs:string" minOccurs="0" />
+				</xs:sequence>
+			</xs:complexType>
+
+			<xs:complexType name="add">
+				<xs:sequence>
+					<xs:element name="i" type="xs:int" />
+					<xs:element name="j" type="xs:int" />
+				</xs:sequence>
+			</xs:complexType>
+
+			<xs:complexType name="addResponse">
+				<xs:sequence>
+					<xs:element name="return" type="xs:int" />
+				</xs:sequence>
+			</xs:complexType>
+		</xs:schema>
+	</types>
+	<message name="add">
+		<part name="parameters" element="tns:add" />
+	</message>
+	<message name="addResponse">
+		<part name="parameters" element="tns:addResponse" />
+	</message>
+	<message name="sayHello">
+		<part name="parameters" element="tns:sayHello" />
+	</message>
+	<message name="sayHelloResponse">
+		<part name="parameters" element="tns:sayHelloResponse" />
+	</message>
+	<portType name="CalculatorWS">
+		<operation name="add">
+			<input wsam:Action="http://calculator.me.org/CalculatorWS/addRequest"
+				message="tns:add" />
+			<output wsam:Action="http://calculator.me.org/CalculatorWS/addResponse"
+				message="tns:addResponse" />
+		</operation>
+		<operation name="sayHello">
+			<input wsam:Action="http://calculator.me.org/CalculatorWS/sayHelloRequest"
+				message="tns:sayHello" />
+			<output wsam:Action="http://calculator.me.org/CalculatorWS/sayHelloResponse"
+				message="tns:sayHelloResponse" />
+		</operation>
+	</portType>
+	<binding name="CalculatorWSPortBinding" type="tns:CalculatorWS">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http"
+			style="document" />
+		<operation name="add">
+			<soap:operation soapAction="" />
+			<input>
+				<soap:body use="literal" />
+			</input>
+			<output>
+				<soap:body use="literal" />
+			</output>
+		</operation>
+		<operation name="sayHello">
+			<soap:operation soapAction="" />
+			<input>
+				<soap:body use="literal" />
+			</input>
+			<output>
+				<soap:body use="literal" />
+			</output>
+		</operation>
+	</binding>
+	<service name="CalculatorWSService">
+		<port name="CalculatorWSPort" binding="tns:CalculatorWSPortBinding">
+			<soap:address
+				location="http://localhost:8080/CalculatorApp/CalculatorWSService" />
+		</port>
+	</service>
+</definitions>
